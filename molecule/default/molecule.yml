@@ -10,7 +10,8 @@ lint:
   options:
     config-file: .yamllint
 platforms:
-  - name: test-jenkins-vm
+
+  - name: test-docker-centos7-jenkins-master
     image: leandelivery/docker-systemd:centos7
     privileged: True
     exposed_ports:
@@ -20,15 +21,17 @@ platforms:
     groups:
       - jenkins_master
       - rhel_family
-  - name: test-jenkins-slave-centos7-vm
+
+  - name: test-docker-centos7-jenkins-slave
     image: leandelivery/docker-systemd:centos7
     privileged: True
     groups:
       - jenkins_slaves
       - rhel_family
-  - name: test-jenkins-slave-ubuntu18-vm
+
+  - name: test-docker-ubuntu1804-jenkins-slave
     image: leandelivery/docker-systemd:ubuntu-18.04
-    privileged: True
+    privileged: true
     security_opts:
       - seccomp=unconfined
     volumes:
@@ -43,9 +46,9 @@ platforms:
       - debian_family
 provisioner:
   name: ansible
-  log: True
   playbooks:
     prepare: prepare.yml
+  log: true
   lint:
     name: ansible-lint
 scenario:

@@ -2,16 +2,16 @@
 # jenkins master
 master_username: admin
 master_password: admin
-master_host: "{{ ansible_host }}"
+master_host: '{{ ansible_host }}'
 master_port: 8080
-master_url: "http://{{ master_host }}:{{ master_port }}"
+master_url: 'http://{{ master_host }}:{{ master_port }}'
 
 # general slave
 slave_agent_name: agent
 slave_executors_num: 1
 
 # jenkins linux slave
-slave_linux_host: "{{ ansible_host }}"
+slave_linux_host: '{{ ansible_host }}'
 slave_linux_ssh_port: 22
 slave_linux_home: /opt/jenkins
 slave_linux_jenkins_cred_id: ci_slave
