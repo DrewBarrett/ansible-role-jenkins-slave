@@ -10,7 +10,8 @@ lint:
   options:
     config-file: .yamllint
 platforms:
-  - name: test-jenkins-vm
+
+  - name: test-epc-centos7-jenkins-master
     image: CentOS7_64-bit
     shape: small
     region: EPAM-BY2
@@ -18,7 +19,8 @@ platforms:
     groups:
       - jenkins_master
       - rhel_family
-  - name: test-jenkins-slave-centos7-vm
+
+  - name: test-epc-centos7-jenkins-slave
     image: CentOS7_64-bit
     shape: small
     region: EPAM-BY2
@@ -26,7 +28,8 @@ platforms:
     groups:
       - jenkins_slaves
       - rhel_family
-  - name: test-jenkins-slave-ubuntu18-vm
+
+  - name: test-epc-ubuntu1804-jenkins-slave
     image: Ubuntu18.04_64-bit
     shape: small
     region: EPAM-BY2
@@ -34,13 +37,14 @@ platforms:
     groups:
       - jenkins_slaves
       - debian_family
+
 provisioner:
   name: ansible
-  log: True
+  log: true
   playbooks:
-    create: ../resources/provisioning/create.yml
-    prepare: prepare.yml
-    destroy: ../resources/provisioning/destroy.yml
+    create: ../resources/provisioning/EPC/create.yml
+    prepare: ../resources/prepare.yml
+    destroy: ../resources/provisioning/EPC/destroy.yml
   config_options:
     ssh_connection:
       control_path: "/var/ans/%%h"

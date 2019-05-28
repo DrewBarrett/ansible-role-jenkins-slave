@@ -32,7 +32,7 @@ Docker jenkins-slave:
   tags:
     - aws
 
-AWS jenkins-slave:
+.AWS jenkins-slave:
   variables:
     AWS_REGION: us-east-1
   stage: deployment test
@@ -50,7 +50,7 @@ AWS jenkins-slave:
 #   tags:
 #     - aws
 
-EPC jenkins-slave:
+.EPC jenkins-slave:
   variables:
     EPC_REGION: EPAM-BY2
   stage: deployment test

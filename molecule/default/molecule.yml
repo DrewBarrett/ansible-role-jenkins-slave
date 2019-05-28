@@ -47,7 +47,7 @@ platforms:
 provisioner:
   name: ansible
   playbooks:
-    prepare: prepare.yml
+    prepare: ../resources/prepare.yml
   log: true
   lint:
     name: ansible-lint
