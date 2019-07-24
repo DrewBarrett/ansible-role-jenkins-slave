@@ -1,68 +1,70 @@
 ---
-- name: "Prepare Ubuntu / Debian"
+- name: Prepare Ubuntu / Debian
   hosts: debian_family
-  gather_facts: False
+  gather_facts: false
   tasks:
-    - name: "Install python for Ansible"
-      raw: test -e /usr/bin/python || (apt install -y python-minimal python-zipstream)
-      become: True
-      changed_when: False
 
-- name: "Prepare RHEL"
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt install -y python-minimal)
+      become: true
+      changed_when: false
+      register: update_result
+      retries: 10
+      delay: 5
+      until: update_result.rc == 0
+
+- name: Prepare RHEL
   hosts: rhel_family
-  gather_facts: False
+  gather_facts: false
   tasks:
-    - name: "Install python for Ansible"
-      raw: test -e /usr/bin/python || (yum install -y python2 python-simplejson)
-      become: True
-      changed_when: False
 
-- name: "Install Oracle-Java"
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (yum install -y python2 python-simplejson)
+      become: true
+      changed_when: false
+      register: update_result
+      retries: 10
+      delay: 5
+      until: update_result.rc == 0
+
+- name: Install Oracle-Java
   hosts: all
   roles:
     - role: lean_delivery.java
+      java_distribution: openjdk
+      java_major_version: 8
+      transport: repositories
+      java_tarball_install: false
 
-# Workaround for centos in docker that fails with
-# yum error: package does not match intended download.
-- name: "Workaround centos yum issue"
-  hosts: rhel_family
-  tasks:
-    - name: "Clean yum cache"
-      command: yum --enablerepo=updates clean metadata
-      become: True
-      args:
-        warn: False
-      changed_when: False
-
-- name: "Prepare Jenkins"
+- name: Prepare Jenkins master node
   hosts: jenkins_master
   vars:
     jenkins2_credentials:
       slave:
         type: 'key'
         keySource: 0
-        key: "{{ jenkins_master_key }}"
+        key: '{{ jenkins_master_key }}'
         id: 'slave_node'
         username: 'slave'
         passphrase: ''
         description: 'credentials for slave node'
   pre_tasks:
-    - name: "Make sure ssh client is installed"
+    - name: Make sure ssh client is installed
       package:
         name: openssh-clients
         state: present
 
-    - name: "Generate a pair of keys"
+    - name: Generate a pair of keys
       command: ssh-keygen -q -t rsa -f /tmp/jenkins_key -C "" -N ""
-      changed_when: False
+      changed_when: false
 
-    - name: "Slurp the private key"
+    - name: Slurp the private key
       slurp:
         src: /tmp/jenkins_key
       register: jenkins_key
 
-    - name: "Save the private key"
+    - name: Save the private key
       set_fact:
-        jenkins_master_key: "{{ jenkins_key['content'] | b64decode }}"
+        jenkins_master_key: '{{ jenkins_key["content"] | b64decode }}'
   roles:
     - role: lean_delivery.jenkins
