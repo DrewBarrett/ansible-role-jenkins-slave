@@ -7,8 +7,8 @@ master_port: 8080
 master_url: "http://{{ master_host }}:{{ master_port }}"
 
 # general slave
-slave_agent_name: agent
-slave_executors_num: 1
+slave_agent_name: "{{ ansible_hostname }}"
+slave_executors_num: 4
 
 # jenkins linux slave
 slave_linux_host: "{{ ansible_host }}"
