@@ -24,7 +24,3 @@
     timeout: 120
     url: "{{ master_url }}"
     script: "{{ lookup('template', 'add_linux_slave.groovy.j2') }}"
-
-- name: "Add selinux support"
-  include_tasks: selinux-support.yml
-  when: ansible_os_family == "RedHat"
