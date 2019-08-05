@@ -13,7 +13,7 @@ slave_executors_num: 4
 # jenkins linux slave
 slave_linux_host: "{{ ansible_host }}"
 slave_linux_ssh_port: 22
-slave_linux_home: /opt/jenkins
+slave_linux_home: /var/lib/jenkins
 slave_linux_jenkins_cred_id: ci_slave
 slave_linux_jenkins_username: jenkins
 slave_linux_jenkins_password: password
