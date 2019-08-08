@@ -2,6 +2,7 @@
 - name: "Create jenkins user"
   user:
     name: "{{ slave_linux_jenkins_username }}"
+    uid: 1000
     group: docker
     password: "!"
     home: /var/lib/jenkins
